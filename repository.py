@@ -51,12 +51,12 @@ class ProductRepository:
     @classmethod
     async def select_all(cls) -> SProduct:
         async with new_session() as session:
-            query = select(ProductOrm).options(joinedload(ProductOrm.creator)).options(joinedload(ProductOrm.buyer)).where(ProductOrm.status == ProductStatus.listed)
+            query = select(ProductOrm).options(joinedload(ProductOrm.creator)).options(joinedload(ProductOrm.buyer))
             result = await session.execute(query)
             products_models = result.scalars().all()
             return products_models
     @classmethod
-    async def add_product(cls, data : SProductFirstT) -> SProduct:
+    async def add_product(cls, data : SProductAdd) -> SProduct:
         async with new_session() as session:
             product_dict = data.model_dump()
             product = ProductOrm(**product_dict)
@@ -65,15 +65,16 @@ class ProductRepository:
             await session.commit()
             return {"message" : "Товар был создан", "data" : product}
     @classmethod
-    async def update_product(cls, prod_id : int, data : SProductUpd):
+    async def update_product(cls, prod_id : int, data : SProductAdd):
         async with new_session() as session:
-            query = update(ProductOrm).values(
-                product_name = data.product_name,
-                product_description = data.product_description,
-                price = data.price,
-                buyer_id = data.buyer_id,
-                product_status = data.status).where(ProductOrm.product_id == prod_id and ProductOrm.status != ProductStatus.recieved)
-            await session.execute(query)
+            product = await session.get(ProductOrm, prod_id)
+            product.product_name = data.product_name
+            product.product_description = data.product_description
+            product.price = data.price
+            product.creator_id = data.creator_id
+            product.buyer_id = data.buyer_id
+            product.status = data.status
+            await session.refresh(product)
             await session.commit()
             
             query2 = select(ProductOrm).where(ProductOrm.product_id == prod_id)

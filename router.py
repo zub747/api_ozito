@@ -35,11 +35,11 @@ async def select_all_products():
     return {"data" : users}
 
 @router.post("/create_product")
-async def create_product(product : Annotated[SProductFirstT, Depends()]):
+async def create_product(product : Annotated[SProductAdd, Depends()]):
     created_product = await ProductRepository.add_product(product)
     return {"ok" : True, "task_id" : created_product}
 @router.put("/update_product")
-async def update_product(id : int, product : Annotated[SProductUpd, Depends()]):
+async def update_product(id : int, product : Annotated[SProductAdd, Depends()]):
     result = await ProductRepository.update_product(id, product)
     return result
 @router.delete("/delete_product")

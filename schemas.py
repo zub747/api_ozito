@@ -7,16 +7,12 @@ class SProductAdd(BaseModel):
     product_name : str
     product_description : str
     price : int
-
-
-class SProductFirstT(SProductAdd):
     creator_id : int
-    
-class SProductUpd(SProductAdd):
     status: ProductStatus
     buyer_id : Optional[int] = None
 
-class SProduct(SProductUpd):
+
+class SProduct(SProductAdd):
     product_id : int
     created_at : date
           
