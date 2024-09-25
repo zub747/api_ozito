@@ -23,7 +23,8 @@ class SUserAdd(BaseModel):
     phone_number : Optional[int] = None
     mail_index : Optional[int] = None
     rating : Optional[float] = None
-    region : str     
+    region : str
+    is_active : bool     
     role : Role
 
 class SUser(SUserAdd):

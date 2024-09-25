@@ -5,7 +5,6 @@ from database import create_tables, delete_tables
 
 from contextlib import asynccontextmanager
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await delete_tables()
@@ -14,7 +13,5 @@ async def lifespan(app: FastAPI):
     yield
     print("Выключение")
     
-
-
 app = FastAPI(title="Ozito", lifespan=lifespan)
 app.include_router(router)

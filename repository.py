@@ -20,7 +20,7 @@ class UserRepository:
             await session.flush()
             await session.commit()
             return {"message" : "Пользователь был создан", "data" : user}
-    @classmethod 
+    @classmethod
     async def check_user(cls, user_login : str, user_password : str) -> SUser:
         async with new_session() as session:
             query = select(UserOrm).where(UserOrm.login == user_login and UserOrm.password == user_password)

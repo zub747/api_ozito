@@ -2,7 +2,7 @@ import enum
 from typing import Optional, List
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, relationship
-from sqlalchemy import String, Integer, ForeignKey, Float, Date
+from sqlalchemy import String, Integer, ForeignKey, Float, Date, Boolean
 from datetime import date
 
 engine = create_async_engine(
@@ -29,8 +29,7 @@ class UserOrm(Model):
     region : Mapped[str] = mapped_column(String, nullable=False)
     rating : Mapped[Optional[int]] = mapped_column(Float, nullable=True, default=0)
     role : Mapped[Role] = mapped_column(default=Role.user)
-    #products_added : Mapped[list["ProductOrm"]] = relationship(back_populates='creator')
-    #product_bought : Mapped[list["ProductOrm"]] = relationship(back_populates="buyer")
+    is_active : Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
 
 class ProductStatus(enum.Enum):
     listed = "Выставлен"

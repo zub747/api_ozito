@@ -23,6 +23,7 @@ async def check_user(login : str, password : str):
         return {"message" : "Данный пользователь существует.", "data" : user}
     else:
         return "Такого пользователя не существует"
+    
 @router.put("/update_user")
 async def update_user(id : int, user : Annotated[SUserAdd, Depends()]):
     result = await UserRepository.update_user(id, user)
@@ -42,6 +43,7 @@ async def create_product(product : Annotated[SProductAdd, Depends()]):
 async def update_product(id : int, product : Annotated[SProductAdd, Depends()]):
     result = await ProductRepository.update_product(id, product)
     return result
+
 @router.delete("/delete_product")
 async def delete_product(id : int):
     result = await ProductRepository.delete_product(id)
